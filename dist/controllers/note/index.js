@@ -30,12 +30,12 @@ class NoteController {
             try {
                 const updatedNoteResponse = yield notes_model_1.NotesModel.updateNested({
                     id,
-                    path: "",
+                    path: ".updated_at",
                     value: (data) => {
-                        return Object.assign(Object.assign(Object.assign({}, data), { updated_at: utils_1.Utils.currentTime.getTime() }), note);
+                        data = Object.assign(Object.assign({}, data), note);
+                        return utils_1.Utils.currentTime.getTime();
                     },
                     getAttributes: exports.GET_ATTRIBUTES,
-                    returnData: true,
                 });
                 return updatedNoteResponse.data;
             }

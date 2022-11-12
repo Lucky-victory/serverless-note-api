@@ -11,5 +11,12 @@ content-type: application/json
 
 ###
 
-GET  http://localhost:3000/api/notes/44442304-c248-4a02-bccf-46115eb424b8
+PUT  http://localhost:3000/api/notes/a1d0d14c-a8b6-4d85-be1b-4c0b8ef3c98f
+content-type: application/json
 
+{
+    "title":"this note was updated 5","content":"the content updated"
+}
+
+###
+DELETE  http://localhost:3000/api/notes/518f558b-9bcb-4adc-8d34-60abe973f7e2

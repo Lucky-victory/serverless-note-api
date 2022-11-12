@@ -8,8 +8,14 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     case "GET":
       try {
         const { id } = req.query;
-        const note = await NoteController.get(id as string);
 
+        const note = await NoteController.get(id as string);
+        if (!note) {
+          res.status(404).json({
+            message: `Note with id '${id}' does not exist`,
+          });
+          return;
+        }
         res.status(200).json({
           data: note,
           message: "Note retrieved successfully",
@@ -17,22 +23,39 @@ export default async (req: VercelRequest, res: VercelResponse) => {
       } catch (_) {}
     case "PUT":
       try {
-        const note = req.body;
+        const noteToUpdate = req.body;
         const { id } = req.query;
-        const updatedNote = await NoteController.update(id as string, note);
+
+        const note = await NoteController.get(id as string);
+        if (!note) {
+          res.status(404).json({
+            message: `Note with id '${id}' does not exist`,
+          });
+          return;
+        }
+        const updatedNote = await NoteController.update(
+          id as string,
+          noteToUpdate
+        );
+
         res.status(200).json({
-          body: `you requested for ${req.query.id} updated`,
-          query: req.query,
+          message: "Note updated successfully",
           data: updatedNote,
         });
       } catch (_) {}
     case "DELETE":
       try {
         const { id } = req.query;
+        const note = await NoteController.get(id as string);
+        if (!note) {
+          res.status(404).json({
+            message: `Note with id '${id}' does not exist`,
+          });
+          return;
+        }
         await NoteController.delete(id as string);
         res.status(200).json({
-          body: `you requested for ${req.query.id} updated`,
-          query: req.query,
+          message: "Note deleted successfully",
         });
       } catch (_) {}
   }

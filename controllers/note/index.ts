@@ -1,31 +1,40 @@
+import { INote } from "../../interfaces/note";
 import { NotesModel } from "../../models/notes.model";
 import { Utils } from "../../utils";
 
 export class NoteController {
   static async get(id: string) {
     try {
-      const noteResponse = await NotesModel.findOne({ id }, GET_ATTRIBUTES);
+      const noteResponse = await NotesModel.findOne<INote>(
+        { id },
+        GET_ATTRIBUTES
+      );
       const note = noteResponse.data;
       return note;
     } catch (_) {
       //
     }
   }
-  static async update(id: string, note: any) {
+  static async update(id: string, note: INote) {
     try {
-      const updatedNoteResponse = await NotesModel.updateNested({
-        id,
-        path: "",
-        value: (data: any) => {
-          return {
-            ...data,
-            updated_at: Utils.currentTime.getTime(),
-            ...note,
-          };
+      // if the note includes a property not specified in schema
+      // then skip it;
+      const noteToUpdate =
+        Utils.pick(note, NotesModel.fields as (keyof INote)[]) || {};
+
+      await NotesModel.update([
+        {
+          id,
+          ...noteToUpdate,
+          updated_at: Utils.currentTime.getTime(),
         },
-        getAttributes: GET_ATTRIBUTES,
-        returnData: true,
-      });
+      ]);
+      const updatedNoteResponse = await NotesModel.findOne<INote>(
+        {
+          id,
+        },
+        GET_ATTRIBUTES
+      );
       return updatedNoteResponse.data;
     } catch (_) {
       //

@@ -21,6 +21,7 @@
     "@vercel/node": "^2.6.2",
     "dotenv": "^16.0.3",
     "harpee": "^4.0.10",
+    "just-pick": "^4.1.1",
     "just-sort-by": "^3.1.1",
     "my-node-ts-utils": "^1.0.7"
   },

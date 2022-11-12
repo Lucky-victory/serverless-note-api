@@ -27,6 +27,7 @@ exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 const note = req.body;
                 const { id } = req.query;
+                console.log(note, "to update");
                 const updatedNote = yield note_1.NoteController.update(id, note);
                 res.status(200).json({
                     body: `you requested for ${req.query.id} updated`,

@@ -51,8 +51,8 @@ const getUserNotes = async (req: VercelRequest, res: VercelResponse) => {
   const notesResponse = await NotesController.getAll("1", limit, offset);
 
   res.status(200).json({
-    body: `main route updated`,
-    query: req.query,
+    message: "Notes retrieved successfully",
     data: notesResponse,
+    result_count: notesResponse?.length,
   });
 };

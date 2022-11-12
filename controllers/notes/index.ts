@@ -1,9 +1,9 @@
+import { INote, NEW_NOTE } from "../../interfaces/note";
 import { NotesModel } from "../../models/notes.model";
-import { Utils } from "../../utils";
 import { GET_ATTRIBUTES } from "../note";
 
 export class NotesController {
-  static async create(newNote: any) {
+  static async create(newNote: NEW_NOTE) {
     try {
       const createResponse = await NotesModel.create(newNote);
       const createdNoteId = createResponse.data?.inserted_hashes[0];
@@ -14,19 +14,15 @@ export class NotesController {
   }
   static async getAll(userId: string, limit: number = 20, offset: number = 0) {
     try {
-      const notesResponse = await NotesModel.findByConditions({
+      const notesResponse = await NotesModel.find<INote[]>({
         limit,
         offset,
-        conditions: [
-          {
-            search_attribute: "user_id",
-            search_value: userId,
-            search_type: "equals",
-          },
-        ],
+        order: "desc",
+        orderby: ["updated_at"],
+        where: `user_id="${userId}"`,
         getAttributes: GET_ATTRIBUTES,
       });
-      return Utils.sortBy(notesResponse.data as object[]);
+      return notesResponse.data;
     } catch (_) {}
   }
 }
