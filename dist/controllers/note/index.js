@@ -9,13 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NoteController = void 0;
+exports.GET_ATTRIBUTES = exports.NoteController = void 0;
 const notes_model_1 = require("../../models/notes.model");
+const utils_1 = require("../../utils");
 class NoteController {
     static get(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const noteResponse = yield notes_model_1.NotesModel.findOne({ id });
+                const noteResponse = yield notes_model_1.NotesModel.findOne({ id }, exports.GET_ATTRIBUTES);
                 const note = noteResponse.data;
                 return note;
             }
@@ -27,6 +28,16 @@ class NoteController {
     static update(id, note) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const updatedNoteResponse = yield notes_model_1.NotesModel.updateNested({
+                    id,
+                    path: "",
+                    value: (data) => {
+                        return Object.assign(Object.assign(Object.assign({}, data), { updated_at: utils_1.Utils.currentTime.getTime() }), note);
+                    },
+                    getAttributes: exports.GET_ATTRIBUTES,
+                    returnData: true,
+                });
+                return updatedNoteResponse.data;
             }
             catch (_) {
                 //
@@ -34,7 +45,17 @@ class NoteController {
         });
     }
     static delete(id) {
-        return __awaiter(this, void 0, void 0, function* () { });
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const noteResponse = yield notes_model_1.NotesModel.findAndRemove({ id });
+                const note = noteResponse.data;
+                return note;
+            }
+            catch (_) {
+                //
+            }
+        });
     }
 }
 exports.NoteController = NoteController;
+exports.GET_ATTRIBUTES = notes_model_1.NotesModel.fields;

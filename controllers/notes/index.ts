@@ -1,5 +1,6 @@
 import { NotesModel } from "../../models/notes.model";
 import { Utils } from "../../utils";
+import { GET_ATTRIBUTES } from "../note";
 
 export class NotesController {
   static async create(newNote: any) {
@@ -23,9 +24,9 @@ export class NotesController {
             search_type: "equals",
           },
         ],
+        getAttributes: GET_ATTRIBUTES,
       });
-     return Utils.sortBy(notesResponse.data as object[])
-    
+      return Utils.sortBy(notesResponse.data as object[]);
     } catch (_) {}
   }
 }

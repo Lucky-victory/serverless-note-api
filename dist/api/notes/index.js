@@ -9,23 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.config = void 0;
 const note_1 = require("../../controllers/note");
 const notes_1 = require("../../controllers/notes");
+exports.config = {
+    api: {
+        bodyParser: true,
+    },
+};
 exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const method = req.method;
     switch (method) {
         case "GET":
             try {
-                let { limit = 20, page = 1 } = req.query;
-                limit = +limit;
-                page = +page;
-                const offset = (page - 1) * limit;
-                const notesResponse = yield notes_1.NotesController.getAll("1", limit, offset);
-                res.status(200).json({
-                    body: `main route updated`,
-                    query: req.query,
-                    data: notesResponse,
-                });
+                yield getUserNotes(req, res);
             }
             catch (err) {
                 res.status(500).json({
@@ -35,17 +32,12 @@ exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         case "POST":
             try {
-                const notesResponse = (yield notes_1.NotesController.create({
-                    user_id: "1",
-                    title: "my user note",
-                    category: "junks",
-                }));
+                const newNote = req.body;
+                const notesResponse = yield notes_1.NotesController.create(Object.assign({ user_id: "1" }, newNote));
                 const note = yield note_1.NoteController.get(notesResponse);
                 res.status(200).json({
                     body: `main route create`,
-                    query: req.query,
                     data: note,
-                    res: notesResponse,
                 });
             }
             catch (err) {
@@ -55,4 +47,16 @@ exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 });
             }
     }
+});
+const getUserNotes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let { limit = 20, page = 1 } = req.query;
+    limit = +limit;
+    page = +page;
+    const offset = (page - 1) * limit;
+    const notesResponse = yield notes_1.NotesController.getAll("1", limit, offset);
+    res.status(200).json({
+        body: `main route updated`,
+        query: req.query,
+        data: notesResponse,
+    });
 });

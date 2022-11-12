@@ -9,14 +9,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const notes_model_1 = require("../../models/notes.model");
+const note_1 = require("../../controllers/note");
 exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield notes_model_1.NotesModel.create({
-        id: req.query.id,
-        title: "My first note",
-    });
-    res.status(200).json({
-        body: `you requested for ${req.query.id} updated`,
-        query: req.query,
-    });
+    const method = req.method;
+    switch (method) {
+        case "GET":
+            try {
+                const { id } = req.query;
+                const note = yield note_1.NoteController.get(id);
+                res.status(200).json({
+                    data: note,
+                    message: "Note retrieved successfully",
+                });
+            }
+            catch (_) { }
+        case "PUT":
+            try {
+                const note = req.body;
+                const { id } = req.query;
+                const updatedNote = yield note_1.NoteController.update(id, note);
+                res.status(200).json({
+                    body: `you requested for ${req.query.id} updated`,
+                    query: req.query,
+                    data: updatedNote,
+                });
+            }
+            catch (_) { }
+        case "DELETE":
+            try {
+                const { id } = req.query;
+                yield note_1.NoteController.delete(id);
+                res.status(200).json({
+                    body: `you requested for ${req.query.id} updated`,
+                    query: req.query,
+                });
+            }
+            catch (_) { }
+    }
 });

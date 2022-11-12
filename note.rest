@@ -1,6 +1,15 @@
 GET http://localhost:3000/api/notes
 
+
+###
+POST http://localhost:3000/api/notes
+content-type: application/json
+
+{
+    "title":"fresh note","content":"This is a fresh note"
+}
+
 ###
 
-POST  http://localhost:3000/api/notes
+GET  http://localhost:3000/api/notes/44442304-c248-4a02-bccf-46115eb424b8
 

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotesController = void 0;
 const notes_model_1 = require("../../models/notes.model");
 const utils_1 = require("../../utils");
+const note_1 = require("../note");
 class NotesController {
     static create(newNote) {
         var _a;
@@ -39,6 +40,7 @@ class NotesController {
                             search_type: "equals",
                         },
                     ],
+                    getAttributes: note_1.GET_ATTRIBUTES,
                 });
                 return utils_1.Utils.sortBy(notesResponse.data);
             }
