@@ -11,11 +11,11 @@ content-type: application/json
 
 ###
 
-PUT  http://localhost:3000/api/notes/a1d0d14c-a8b6-4d85-be1b-4c0b8ef3c98f
+PUT  http://localhost:3000/api/notes/501eed12-c444-4b2d-9dd4-c66c1e14d5d6
 content-type: application/json
 
 {
-    "title":"this note was updated 5","content":"the content updated"
+    "title":"fresh note updated 2","content2":"the content updated"
 }
 
 ###

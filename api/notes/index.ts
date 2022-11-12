@@ -3,17 +3,17 @@ import { NoteController } from "../../controllers/note";
 import { NotesController } from "../../controllers/notes";
 import { HTTP_METHODS } from "../../interfaces/shared";
 
-export const config = {
-  api: {
-    bodyParser: true,
-  },
-};
 export default async (req: VercelRequest, res: VercelResponse) => {
   const method = req.method as HTTP_METHODS;
   switch (method) {
     case "GET":
       try {
-        await getUserNotes(req, res);
+        const { category } = req.query;
+        if (!category) {
+          await getUserNotes(req, res);
+          return;
+        }
+        await getUserNotesByCategory(req, res);
       } catch (err) {
         res.status(500).json({
           message: "An error occurred, couldn't retrieve notes",
@@ -49,6 +49,20 @@ const getUserNotes = async (req: VercelRequest, res: VercelResponse) => {
   page = +page;
   const offset = (page - 1) * limit;
   const notesResponse = await NotesController.getAll("1", limit, offset);
+
+  res.status(200).json({
+    message: "Notes retrieved successfully",
+    data: notesResponse,
+    result_count: notesResponse?.length,
+  });
+};
+
+const getUserNotesByCategory = async (
+  req: VercelRequest,
+  res: VercelResponse
+) => {
+  const { category } = req.query;
+  const notesResponse = await NotesController.getByCategory(category as string);
 
   res.status(200).json({
     message: "Notes retrieved successfully",

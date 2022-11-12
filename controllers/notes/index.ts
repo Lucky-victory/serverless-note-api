@@ -25,4 +25,16 @@ export class NotesController {
       return notesResponse.data;
     } catch (_) {}
   }
+  static async getByCategory(category: string) {
+    try {
+      const userId = "1";
+      const notesResponse = await NotesModel.find<INote[]>({
+        order: "desc",
+        orderby: ["updated_at"],
+        where: `user_id="${userId}" AND category="${category}"`,
+        getAttributes: GET_ATTRIBUTES,
+      });
+      return notesResponse.data;
+    } catch (_) {}
+  }
 }
