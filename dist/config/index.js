@@ -10,5 +10,6 @@ exports.envConfig = {
     db_host: process.env.DB_HOST,
     db_pass: process.env.DB_PASS,
     db_user: process.env.DB_USER,
-    db_schema: process.env.DB_SCHEMA
+    db_schema: process.env.DB_SCHEMA,
+    is_dev: process.env.NODE_ENV !== "production",
 };

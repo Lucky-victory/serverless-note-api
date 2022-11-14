@@ -14,3 +14,5 @@ export interface ITodoItem {
 }
 
 export type NEW_TODO = Pick<ITodo, "title" | "items" | "user_id">;
+
+export type TODO_UPDATE_TYPE = "title" | "item" | "all";

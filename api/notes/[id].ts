@@ -1,62 +1,20 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { NoteController } from "../../controllers/note";
+
+import { NoteHandler } from "../../handlers/note.handler";
 import { HTTP_METHODS } from "../../interfaces/shared";
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const method = req.method as HTTP_METHODS;
   switch (method) {
     case "GET":
-      try {
-        const { id } = req.query;
-
-        const note = await NoteController.get(id as string);
-        if (!note) {
-          res.status(404).json({
-            message: `Note with id '${id}' does not exist`,
-          });
-          return;
-        }
-        res.status(200).json({
-          data: note,
-          message: "Note retrieved successfully",
-        });
-      } catch (_) {}
+      await NoteHandler.get(req, res);
     case "PUT":
-      try {
-        const noteToUpdate = req.body;
-        const { id } = req.query;
-
-        const note = await NoteController.get(id as string);
-        if (!note) {
-          res.status(404).json({
-            message: `Note with id '${id}' does not exist`,
-          });
-          return;
-        }
-        const updatedNote = await NoteController.update(
-          id as string,
-          noteToUpdate
-        );
-
-        res.status(200).json({
-          message: "Note updated successfully",
-          data: updatedNote,
-        });
-      } catch (_) {}
+      await NoteHandler.update(req, res);
     case "DELETE":
-      try {
-        const { id } = req.query;
-        const note = await NoteController.get(id as string);
-        if (!note) {
-          res.status(404).json({
-            message: `Note with id '${id}' does not exist`,
-          });
-          return;
-        }
-        await NoteController.delete(id as string);
-        res.status(200).json({
-          message: "Note deleted successfully",
-        });
-      } catch (_) {}
+      await NoteHandler.delete(req, res);
+    default:
+      res.status(405).json({
+        message: "Unsupported HTTP method",
+      });
   }
 };

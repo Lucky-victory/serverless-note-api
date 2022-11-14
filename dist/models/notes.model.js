@@ -8,7 +8,7 @@ const db_1 = require("../config/db");
 const utils_1 = require("../utils");
 (0, db_1.connectDB)();
 const notesSchema = new Schema({
-    name: config_1.envConfig.db_schema || "NoteDem",
+    name: config_1.envConfig.db_schema || "NoteApp",
     fields: {
         title: harpee_1.HType.string(),
         pages: harpee_1.HType.array()

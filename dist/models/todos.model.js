@@ -8,12 +8,12 @@ const db_1 = require("../config/db");
 const utils_1 = require("../utils");
 (0, db_1.connectDB)();
 const todosSchema = new Schema({
-    name: config_1.envConfig.db_schema || "NoteDem",
+    name: config_1.envConfig.db_schema || "NoteApp",
     fields: {
         title: harpee_1.HType.string(),
         items: harpee_1.HType.array()
             .items(harpee_1.HType.object({
-            id: harpee_1.HType.string().default(utils_1.Utils.generateID()),
+            id: harpee_1.HType.string().required(),
             content: harpee_1.HType.string().required(),
             completed: harpee_1.HType.bool().default(false),
         }))

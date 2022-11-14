@@ -9,42 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const todos_1 = require("../../controllers/todos");
+const todos_handler_1 = require("../../handlers/todos.handler");
 exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const method = req.method;
     switch (method) {
         case "GET":
-            try {
-                const todos = yield todos_1.TodosController.getAll();
-                res.status(200).json({
-                    body: `main route all`,
-                    message: "Todos retrieved successfully",
-                    data: todos,
-                    count: todos === null || todos === void 0 ? void 0 : todos.length,
-                });
-            }
-            catch (err) {
-                res.status(500).json({
-                    message: "An error occurred, couldn't retrieve todos",
-                    error: err,
-                });
-            }
+            yield todos_handler_1.TodosHandler.get(req, res);
         case "POST":
-            try {
-                const newTodo = req.body;
-                console.log(newTodo);
-                const todo = yield todos_1.TodosController.create(Object.assign({ user_id: "1" }, newTodo));
-                res.status(200).json({
-                    body: `main route create`,
-                    message: "Todo created successfully",
-                    data: todo,
-                });
-            }
-            catch (err) {
-                res.status(500).json({
-                    message: "An error occurred, couldn't create todo",
-                    error: err,
-                });
-            }
+            yield todos_handler_1.TodosHandler.create(req, res);
+        default:
+            res.status(405).json({
+                message: "Unsupported HTTP method",
+            });
     }
 });

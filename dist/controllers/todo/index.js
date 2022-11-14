@@ -30,24 +30,52 @@ class TodoController {
                     path: ".title",
                     value: (data) => {
                         data.updated_at = utils_1.Utils.currentTime.getTime();
-                        data.title = title;
+                        data.title = title || data.title;
                         return data.title;
                     },
+                    getAttributes: exports.TODO_FIELDS,
                 });
                 return updatedTodoResponse.data;
             }
             catch (_) { }
         });
     }
-    static updatedItem(todoId, todoItemsToUpdate) {
+    static updatedItems(todoId, todoItem) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const updatedTodoResponse = yield todos_model_1.TodosModel.updateNested({
                     id: todoId,
                     path: ".",
                     value: (data) => {
+                        if (!(todoItem === null || todoItem === void 0 ? void 0 : todoItem.id)) {
+                            data.items.push({
+                                content: todoItem === null || todoItem === void 0 ? void 0 : todoItem.content,
+                                id: `item_${utils_1.Utils.generateID(false)}`,
+                            });
+                        }
+                        data.items.map((prevItem) => {
+                            prevItem.id === todoItem.id ? todoItem : prevItem;
+                        });
                         data.updated_at = utils_1.Utils.currentTime.getTime();
-                        data.items = todoItemsToUpdate;
+                        return data;
+                    },
+                    getAttributes: exports.TODO_FIELDS,
+                });
+                return updatedTodoResponse.data;
+            }
+            catch (_) { }
+        });
+    }
+    static update(todoId, todoToUpdate) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updatedTodoResponse = yield todos_model_1.TodosModel.updateNested({
+                    id: todoId,
+                    path: ".",
+                    value: (data) => {
+                        data.title = (todoToUpdate === null || todoToUpdate === void 0 ? void 0 : todoToUpdate.title) || data.title;
+                        data.items = (todoToUpdate === null || todoToUpdate === void 0 ? void 0 : todoToUpdate.items) || data.items;
+                        data.updated_at = utils_1.Utils.currentTime.getTime();
                         return data;
                     },
                     getAttributes: exports.TODO_FIELDS,

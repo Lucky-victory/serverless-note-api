@@ -14,8 +14,9 @@ export class NotesController {
         NOTE_FIELDS
       );
       return createdNote.data;
-    } catch (_) {
-      //
+    } catch (error) {
+      throw error;
+      console.log(error);
     }
   }
 

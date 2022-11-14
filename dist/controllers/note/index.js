@@ -20,8 +20,8 @@ class NoteController {
                 const note = noteResponse.data;
                 return note;
             }
-            catch (_) {
-                //
+            catch (error) {
+                console.log(error);
             }
         });
     }
@@ -37,6 +37,53 @@ class NoteController {
                 const updatedNoteResponse = yield notes_model_1.NotesModel.findOne({
                     id,
                 }, exports.NOTE_FIELDS);
+                return updatedNoteResponse.data;
+            }
+            catch (_) {
+                //
+            }
+        });
+    }
+    static updateTitle(id, title) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updatedNoteResponse = yield notes_model_1.NotesModel.updateNested({
+                    id,
+                    path: ".title",
+                    value: (data) => {
+                        data.title = title || data.title;
+                        data.updated_at = utils_1.Utils.currentTime.getTime();
+                        return data.title;
+                    },
+                    getAttributes: exports.NOTE_FIELDS,
+                });
+                return updatedNoteResponse.data;
+            }
+            catch (_) {
+                //
+            }
+        });
+    }
+    static updatePages(id, page) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updatedNoteResponse = yield notes_model_1.NotesModel.updateNested({
+                    id,
+                    path: ".pages",
+                    value: (data) => {
+                        if (!(page === null || page === void 0 ? void 0 : page.id)) {
+                            data.pages.push({
+                                content: page === null || page === void 0 ? void 0 : page.content,
+                                id: `page_${utils_1.Utils.generateID(false)}`,
+                            });
+                        }
+                        data.pages.map((prevPage) => {
+                            prevPage.id === page.id ? page : prevPage;
+                        });
+                        data.updated_at = utils_1.Utils.currentTime.getTime();
+                    },
+                    getAttributes: exports.NOTE_FIELDS,
+                });
                 return updatedNoteResponse.data;
             }
             catch (_) {

@@ -9,59 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const note_1 = require("../../controllers/note");
+const note_handler_1 = require("../../handlers/note.handler");
 exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const method = req.method;
     switch (method) {
         case "GET":
-            try {
-                const { id } = req.query;
-                const note = yield note_1.NoteController.get(id);
-                if (!note) {
-                    res.status(404).json({
-                        message: `Note with id '${id}' does not exist`,
-                    });
-                    return;
-                }
-                res.status(200).json({
-                    data: note,
-                    message: "Note retrieved successfully",
-                });
-            }
-            catch (_) { }
+            yield note_handler_1.NoteHandler.get(req, res);
         case "PUT":
-            try {
-                const noteToUpdate = req.body;
-                const { id } = req.query;
-                const note = yield note_1.NoteController.get(id);
-                if (!note) {
-                    res.status(404).json({
-                        message: `Note with id '${id}' does not exist`,
-                    });
-                    return;
-                }
-                const updatedNote = yield note_1.NoteController.update(id, noteToUpdate);
-                res.status(200).json({
-                    message: "Note updated successfully",
-                    data: updatedNote,
-                });
-            }
-            catch (_) { }
+            yield note_handler_1.NoteHandler.update(req, res);
         case "DELETE":
-            try {
-                const { id } = req.query;
-                const note = yield note_1.NoteController.get(id);
-                if (!note) {
-                    res.status(404).json({
-                        message: `Note with id '${id}' does not exist`,
-                    });
-                    return;
-                }
-                yield note_1.NoteController.delete(id);
-                res.status(200).json({
-                    message: "Note deleted successfully",
-                });
-            }
-            catch (_) { }
+            yield note_handler_1.NoteHandler.delete(req, res);
+        default:
+            res.status(405).json({
+                message: "Unsupported HTTP method",
+            });
     }
 });

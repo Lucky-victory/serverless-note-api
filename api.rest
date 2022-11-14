@@ -42,11 +42,16 @@ content-type: application/json
 
 ### update todo
 
-PUT  http://localhost:3000/api/todos/501eed12-c444-4b2d-9dd4-c66c1e14d5d6
+PUT  http://localhost:3000/api/todos/257b89de-df0e-4ffb-a75b-8ce61329fa96?
 content-type: application/json
 
+{
+
+"items":[{"content":"yam"},{"content":"beans"},{"content":"corn"},{"content":"rice"}]
+
+}
 
 ### delete note
 
-DELETE  http://localhost:3000/api/todos/501eed12-c444-4b2d-9dd4-c66c1e14d5d6
+DELETE  http://localhost:3000/api/todos/0e8ed3fb-f176-413d-b8a9-09cc4680daab
 content-type: application/json

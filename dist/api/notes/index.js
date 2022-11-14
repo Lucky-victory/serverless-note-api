@@ -9,60 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const notes_1 = require("../../controllers/notes");
+const notes_handler_1 = require("../../handlers/notes.handler");
 exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const method = req.method;
     switch (method) {
         case "GET":
-            try {
-                const { category } = req.query;
-                if (!category) {
-                    yield getUserNotes(req, res);
-                    return;
-                }
-                yield getUserNotesByCategory(req, res);
-            }
-            catch (err) {
-                res.status(500).json({
-                    message: "An error occurred, couldn't retrieve notes",
-                    error: err,
-                });
-            }
+            yield notes_handler_1.NotesHandler.get(req, res);
         case "POST":
-            try {
-                const newNote = req.body;
-                const note = yield notes_1.NotesController.create(Object.assign({ user_id: "1" }, newNote));
-                res.status(200).json({
-                    body: `main route create`,
-                    data: note,
-                });
-            }
-            catch (err) {
-                res.status(500).json({
-                    message: "An error occurred, couldn't create note",
-                    error: err,
-                });
-            }
+            yield notes_handler_1.NotesHandler.create(req, res);
+        default:
+            res.status(405).json({
+                message: "Unsupported HTTP method",
+            });
     }
-});
-const getUserNotes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { limit = 20, page = 1 } = req.query;
-    limit = +limit;
-    page = +page;
-    const offset = (page - 1) * limit;
-    const notesResponse = yield notes_1.NotesController.getAll("1", limit, offset);
-    res.status(200).json({
-        message: "Notes retrieved successfully",
-        data: notesResponse,
-        result_count: notesResponse === null || notesResponse === void 0 ? void 0 : notesResponse.length,
-    });
-});
-const getUserNotesByCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { category } = req.query;
-    const notesResponse = yield notes_1.NotesController.getByCategory(category);
-    res.status(200).json({
-        message: "Notes retrieved successfully",
-        data: notesResponse,
-        result_count: notesResponse === null || notesResponse === void 0 ? void 0 : notesResponse.length,
-    });
 });

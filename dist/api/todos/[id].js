@@ -9,65 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const todo_1 = require("../../controllers/todo");
+const todo_handler_1 = require("../../handlers/todo.handler");
 exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const method = req.method;
     switch (method) {
         case "GET":
-            try {
-                const { id } = req.query;
-                const todo = yield todo_1.TodoController.get(id);
-                if (!todo) {
-                    res.status(404).json({
-                        message: `Todo with id '${id}' does not exist`,
-                    });
-                    return;
-                }
-                res.status(200).json({
-                    data: todo,
-                    message: "Todo retrieved successfully",
-                });
-            }
-            catch (_) { }
+            yield todo_handler_1.TodoHandler.get(req, res);
         case "PUT":
-            try {
-                const todoToUpdate = req.body;
-                const { id, part } = req.query;
-                const todo = yield todo_1.TodoController.get(id);
-                if (!todo) {
-                    res.status(404).json({
-                        message: `Todo with id '${id}' does not exist`,
-                    });
-                    return;
-                }
-                let updatedTodo;
-                if (part === 'title') {
-                    updatedTodo = (yield todo_1.TodoController.updateTitle(id, todoToUpdate));
-                }
-                else {
-                    updatedTodo = (yield todo_1.TodoController.updatedItem(id, todoToUpdate));
-                }
-                res.status(200).json({
-                    message: "Todo updated successfully",
-                    data: updatedTodo,
-                });
-            }
-            catch (_) { }
+            yield todo_handler_1.TodoHandler.update(req, res);
         case "DELETE":
-            try {
-                const { id } = req.query;
-                const todo = yield todo_1.TodoController.get(id);
-                if (!todo) {
-                    res.status(404).json({
-                        message: `Todo with id '${id}' does not exist`,
-                    });
-                    return;
-                }
-                yield todo_1.TodoController.delete(id);
-                res.status(200).json({
-                    message: "Todo deleted successfully",
-                });
-            }
-            catch (_) { }
+            yield todo_handler_1.TodoHandler.delete(req, res);
+        default:
+            res.status(405).json({
+                message: "Unsupported HTTP method",
+            });
     }
 });
