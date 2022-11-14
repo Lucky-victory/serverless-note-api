@@ -9,14 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GET_ATTRIBUTES = exports.NoteController = void 0;
+exports.NOTE_FIELDS = exports.NoteController = void 0;
 const notes_model_1 = require("../../models/notes.model");
 const utils_1 = require("../../utils");
 class NoteController {
     static get(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const noteResponse = yield notes_model_1.NotesModel.findOne({ id }, exports.GET_ATTRIBUTES);
+                const noteResponse = yield notes_model_1.NotesModel.findOne({ id }, exports.NOTE_FIELDS);
                 const note = noteResponse.data;
                 return note;
             }
@@ -28,15 +28,15 @@ class NoteController {
     static update(id, note) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const updatedNoteResponse = yield notes_model_1.NotesModel.updateNested({
+                // if the note includes a property not specified in schema
+                // then skip it;
+                const noteToUpdate = utils_1.Utils.pick(note, notes_model_1.NotesModel.fields) || {};
+                yield notes_model_1.NotesModel.update([
+                    Object.assign(Object.assign({ id }, noteToUpdate), { updated_at: utils_1.Utils.currentTime.getTime() }),
+                ]);
+                const updatedNoteResponse = yield notes_model_1.NotesModel.findOne({
                     id,
-                    path: ".updated_at",
-                    value: (data) => {
-                        data = Object.assign(Object.assign({}, data), note);
-                        return utils_1.Utils.currentTime.getTime();
-                    },
-                    getAttributes: exports.GET_ATTRIBUTES,
-                });
+                }, exports.NOTE_FIELDS);
                 return updatedNoteResponse.data;
             }
             catch (_) {
@@ -58,4 +58,4 @@ class NoteController {
     }
 }
 exports.NoteController = NoteController;
-exports.GET_ATTRIBUTES = notes_model_1.NotesModel.fields;
+exports.NOTE_FIELDS = notes_model_1.NotesModel.fields;

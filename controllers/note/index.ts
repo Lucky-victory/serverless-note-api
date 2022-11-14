@@ -5,10 +5,7 @@ import { Utils } from "../../utils";
 export class NoteController {
   static async get(id: string) {
     try {
-      const noteResponse = await NotesModel.findOne<INote>(
-        { id },
-        GET_ATTRIBUTES
-      );
+      const noteResponse = await NotesModel.findOne<INote>({ id }, NOTE_FIELDS);
       const note = noteResponse.data;
       return note;
     } catch (_) {
@@ -33,7 +30,7 @@ export class NoteController {
         {
           id,
         },
-        GET_ATTRIBUTES
+        NOTE_FIELDS
       );
       return updatedNoteResponse.data;
     } catch (_) {
@@ -51,4 +48,4 @@ export class NoteController {
   }
 }
 
-export const GET_ATTRIBUTES = NotesModel.fields;
+export const NOTE_FIELDS = NotesModel.fields;

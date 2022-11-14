@@ -11,10 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initializeDB = void 0;
 const notes_model_1 = require("../models/notes.model");
+const todos_model_1 = require("../models/todos.model");
 function initializeDB() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield notes_model_1.NotesModel.init();
+            yield todos_model_1.TodosModel.init();
             console.log("Database initialized successfully");
         }
         catch (_a) {

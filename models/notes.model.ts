@@ -7,10 +7,17 @@ import { Utils } from "../utils";
 
 connectDB();
 const notesSchema = new Schema({
-  name: envConfig.db_schema || "NoteDem",
+  name: envConfig.db_schema || "NoteApp",
   fields: {
     title: HType.string(),
-    content: HType.string(),
+    pages: HType.array()
+      .items(
+        HType.object({
+          id: HType.string().default(Utils.generateID()),
+          content: HType.string(),
+        })
+      )
+      .default([]),
     user_id: HType.string().required(),
     created_at: HType.date().default(Utils.currentTime.getTime()),
     updated_at: HType.date().default(Utils.currentTime.getTime()),

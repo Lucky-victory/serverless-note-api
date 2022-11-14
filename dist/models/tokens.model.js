@@ -10,17 +10,11 @@ const utils_1 = require("../utils");
 const notesSchema = new Schema({
     name: config_1.envConfig.db_schema || "NoteDem",
     fields: {
-        title: harpee_1.HType.string(),
-        pages: harpee_1.HType.array()
-            .items(harpee_1.HType.object({
-            id: harpee_1.HType.string().default(utils_1.Utils.generateID()),
-            content: harpee_1.HType.string(),
-        }))
-            .default([]),
+        key: harpee_1.HType.string(),
         user_id: harpee_1.HType.string().required(),
+        status: harpee_1.HType.string().allow('active', 'revoked', 'expired').default('active'),
         created_at: harpee_1.HType.date().default(utils_1.Utils.currentTime.getTime()),
         updated_at: harpee_1.HType.date().default(utils_1.Utils.currentTime.getTime()),
-        category: harpee_1.HType.string(),
     },
 });
-exports.NotesModel = new Model("notes", notesSchema);
+exports.NotesModel = new Model("tokens", notesSchema);

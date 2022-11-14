@@ -9,57 +9,63 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const note_1 = require("../../controllers/note");
+const todo_1 = require("../../controllers/todo");
 exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const method = req.method;
     switch (method) {
         case "GET":
             try {
                 const { id } = req.query;
-                const note = yield note_1.NoteController.get(id);
-                if (!note) {
+                const todo = yield todo_1.TodoController.get(id);
+                if (!todo) {
                     res.status(404).json({
-                        message: `Note with id '${id}' does not exist`,
+                        message: `Todo with id '${id}' does not exist`,
                     });
                     return;
                 }
                 res.status(200).json({
-                    data: note,
-                    message: "Note retrieved successfully",
+                    data: todo,
+                    message: "Todo retrieved successfully",
                 });
             }
             catch (_) { }
         case "PUT":
             try {
-                const noteToUpdate = req.body;
-                const { id } = req.query;
-                const note = yield note_1.NoteController.get(id);
-                if (!note) {
+                const todoToUpdate = req.body;
+                const { id, part } = req.query;
+                const todo = yield todo_1.TodoController.get(id);
+                if (!todo) {
                     res.status(404).json({
-                        message: `Note with id '${id}' does not exist`,
+                        message: `Todo with id '${id}' does not exist`,
                     });
                     return;
                 }
-                const updatedNote = yield note_1.NoteController.update(id, noteToUpdate);
+                let updatedTodo;
+                if (part === 'title') {
+                    updatedTodo = (yield todo_1.TodoController.updateTitle(id, todoToUpdate));
+                }
+                else {
+                    updatedTodo = (yield todo_1.TodoController.updatedItem(id, todoToUpdate));
+                }
                 res.status(200).json({
-                    message: "Note updated successfully",
-                    data: updatedNote,
+                    message: "Todo updated successfully",
+                    data: updatedTodo,
                 });
             }
             catch (_) { }
         case "DELETE":
             try {
                 const { id } = req.query;
-                const note = yield note_1.NoteController.get(id);
-                if (!note) {
+                const todo = yield todo_1.TodoController.get(id);
+                if (!todo) {
                     res.status(404).json({
-                        message: `Note with id '${id}' does not exist`,
+                        message: `Todo with id '${id}' does not exist`,
                     });
                     return;
                 }
-                yield note_1.NoteController.delete(id);
+                yield todo_1.TodoController.delete(id);
                 res.status(200).json({
-                    message: "Note deleted successfully",
+                    message: "Todo deleted successfully",
                 });
             }
             catch (_) { }

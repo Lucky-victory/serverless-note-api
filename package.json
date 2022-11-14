@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db:init": "node ./dist/config/db.init.js"
+    "db:init": "npm run build-dev && node ./dist/config/db.init.js",
+    "build-dev": "npx tsc "
   },
   "repository": {
     "type": "git",

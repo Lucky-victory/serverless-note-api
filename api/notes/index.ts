@@ -1,7 +1,7 @@
 import { VercelResponse, VercelRequest } from "@vercel/node";
-import { NoteController } from "../../controllers/note";
-import { NotesController } from "../../controllers/notes";
 import { HTTP_METHODS } from "../../interfaces/shared";
+
+import { NotesController } from "../../controllers/notes";
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const method = req.method as HTTP_METHODS;
@@ -24,11 +24,11 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     case "POST":
       try {
         const newNote = req.body;
-        const notesResponse = await NotesController.create({
+        const note = await NotesController.create({
           user_id: "1",
           ...newNote,
         });
-        const note = await NoteController.get(notesResponse as string);
+
         res.status(200).json({
           body: `main route create`,
 

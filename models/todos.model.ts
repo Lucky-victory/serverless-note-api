@@ -6,15 +6,23 @@ import { connectDB } from "../config/db";
 import { Utils } from "../utils";
 
 connectDB();
-const notesSchema = new Schema({
+const todosSchema = new Schema({
   name: envConfig.db_schema || "NoteApp",
   fields: {
-    email: HType.string().email().required(),
-    verified: HType.bool().default(false),
-    fullname: HType.string(),
+    title: HType.string(),
+    items: HType.array()
+      .items(
+        HType.object({
+          id: HType.string().required(),
+          content: HType.string().required(),
+          completed: HType.bool().default(false),
+        })
+      )
+      .default([]),
+    user_id: HType.string().required(),
     created_at: HType.date().default(Utils.currentTime.getTime()),
     updated_at: HType.date().default(Utils.currentTime.getTime()),
   },
 });
 
-export const NotesModel = new Model("users", notesSchema);
+export const TodosModel = new Model("todos", todosSchema);

@@ -1,0 +1,52 @@
+### get all notes
+
+GET http://localhost:3000/api/notes
+
+
+
+### create notes
+POST http://localhost:3000/api/notes
+content-type: application/json
+
+{
+    "title":"fresh note 2","pages":[{"content":"this is page 1"}]
+}
+
+### update note
+
+PUT  http://localhost:3000/api/notes/501eed12-c444-4b2d-9dd4-c66c1e14d5d6
+content-type: application/json
+
+{
+    "title":"fresh note updated 2","content":"the content updated"
+}
+
+### delete note
+DELETE  http://localhost:3000/api/notes/518f558b-9bcb-4adc-8d34-60abe973f7e2
+
+
+### TODOS 
+
+### get all todos
+
+GET http://localhost:3000/api/todos
+
+
+### create todos
+POST http://localhost:3000/api/todos
+content-type: application/json
+
+{
+"title":"my grocery list","items":[{"content":"yam"},{"content":"beans"},{"content":"rice"}]
+}
+
+### update todo
+
+PUT  http://localhost:3000/api/todos/501eed12-c444-4b2d-9dd4-c66c1e14d5d6
+content-type: application/json
+
+
+### delete note
+
+DELETE  http://localhost:3000/api/todos/501eed12-c444-4b2d-9dd4-c66c1e14d5d6
+content-type: application/json

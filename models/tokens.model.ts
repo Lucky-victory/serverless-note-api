@@ -9,12 +9,14 @@ connectDB();
 const notesSchema = new Schema({
   name: envConfig.db_schema || "NoteApp",
   fields: {
-    email: HType.string().email().required(),
-    verified: HType.bool().default(false),
-    fullname: HType.string(),
+    key: HType.string(),
+    user_id: HType.string().required(),
+    status: HType.string()
+      .allow("active", "revoked", "expired")
+      .default("active"),
     created_at: HType.date().default(Utils.currentTime.getTime()),
     updated_at: HType.date().default(Utils.currentTime.getTime()),
   },
 });
 
-export const NotesModel = new Model("users", notesSchema);
+export const NotesModel = new Model("tokens", notesSchema);
