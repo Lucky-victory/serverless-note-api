@@ -7,10 +7,10 @@ export class NotesHandler {
     try {
       const { category } = req.query;
       if (!category) {
-        await getUserNotes(req, res);
-        return;
+      return  await getUserNotes(req, res);
+        
       }
-      await getUserNotesByCategory(req, res);
+    return  await getUserNotesByCategory(req, res);
     } catch (error) {
       res.status(500).json({
         data: null,
@@ -29,8 +29,7 @@ export class NotesHandler {
       });
 
       res.status(200).json({
-        body: `main route create`,
-
+        message: "Note created successfully",
         data: note,
       });
     } catch (error) {
@@ -50,7 +49,7 @@ const getUserNotes = async (req: VercelRequest, res: VercelResponse) => {
   const offset = (page - 1) * limit;
   const notesResponse = await NotesController.getAll("1", limit, offset);
 
-  res.status(200).json({
+return  res.status(200).json({
     message: "Notes retrieved successfully",
     data: notesResponse,
     count: notesResponse?.length,
@@ -64,7 +63,7 @@ const getUserNotesByCategory = async (
   const { category } = req.query;
   const notesResponse = await NotesController.getByCategory(category as string);
 
-  res.status(200).json({
+ return res.status(200).json({
     message: "Notes retrieved successfully",
     data: notesResponse,
     count: notesResponse?.length,

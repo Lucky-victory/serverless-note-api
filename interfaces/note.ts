@@ -13,3 +13,4 @@ export interface INotePage {
   id: string;
   content: string;
 }
+export type NOTE_UPDATE_TYPE = "title" | "page" | "all";

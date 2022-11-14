@@ -8,9 +8,7 @@ export class NoteController {
       const noteResponse = await NotesModel.findOne<INote>({ id }, NOTE_FIELDS);
       const note = noteResponse.data;
       return note;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
   static async update(id: string, note: INote) {
     try {
@@ -68,8 +66,8 @@ export class NoteController {
               id: `page_${Utils.generateID(false)}`,
             });
           }
-          data.pages.map((prevPage) => {
-            prevPage.id === page.id ? page : prevPage;
+          data.pages = data.pages.map((prevPage) => {
+            return prevPage.id === page.id ? page : prevPage;
           });
           data.updated_at = Utils.currentTime.getTime();
         },

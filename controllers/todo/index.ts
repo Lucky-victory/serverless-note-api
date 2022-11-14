@@ -41,11 +41,12 @@ export class TodoController {
           if (!todoItem?.id) {
             data.items.push({
               content: todoItem?.content,
+              completed: false,
               id: `item_${Utils.generateID(false)}`,
             });
           }
-          data.items.map((prevItem) => {
-            prevItem.id === todoItem.id ? todoItem : prevItem;
+        data.items=  data.items.map((prevItem) => {
+            return prevItem.id === todoItem.id ? todoItem : prevItem;
           });
           data.updated_at = Utils.currentTime.getTime();
 

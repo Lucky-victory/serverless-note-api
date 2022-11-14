@@ -1,4 +1,4 @@
-import { envConfig } from '../config';
+import { envConfig } from "../config";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { TodoController } from "../controllers/todo";
 import { ITodo, ITodoItem, TODO_UPDATE_TYPE } from "../interfaces/todos";
@@ -31,15 +31,16 @@ export class TodoHandler {
   static async update(req: VercelRequest, res: VercelResponse) {
     try {
       const todoToUpdate: ITodo | ITodoItem = req.body;
+      console.log(todoToUpdate);
+
       const { id } = req.query;
       const part = req.query.part as TODO_UPDATE_TYPE;
 
       const todo = await TodoController.get(id as string);
       if (!todo) {
-        res.status(404).json({
+        return res.status(404).json({
           message: `Todo with id '${id}' does not exist`,
         });
-        return;
       }
       let updatedTodo!: ITodo;
       if (part === "title") {
@@ -64,13 +65,16 @@ export class TodoHandler {
         )) as ITodo;
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         message: "Todo updated successfully",
         data: updatedTodo,
       });
     } catch (error) {
-      res.status(500).json({
-        data: null,error:envConfig.is_dev?error:null,
+      console.log(error);
+
+      return res.status(500).json({
+        data: null,
+        error: envConfig.is_dev ? error : null,
         message: "There was an error, couldn't update Todo",
       });
     }

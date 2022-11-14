@@ -18,7 +18,9 @@ PUT  http://localhost:3000/api/notes/501eed12-c444-4b2d-9dd4-c66c1e14d5d6
 content-type: application/json
 
 {
-    "title":"fresh note updated 2","content":"the content updated"
+    "title":"fresh note updated 2","pages":[{
+        "content":"First page"
+    }]
 }
 
 ### delete note
@@ -42,14 +44,12 @@ content-type: application/json
 
 ### update todo
 
-PUT  http://localhost:3000/api/todos/257b89de-df0e-4ffb-a75b-8ce61329fa96?
+PUT  http://localhost:3000/api/todos/257b89de-df0e-4ffb-a75b-8ce61329fa96?part=item
 content-type: application/json
 
-{
+{"content":"garri extra"}
 
-"items":[{"content":"yam"},{"content":"beans"},{"content":"corn"},{"content":"rice"}]
 
-}
 
 ### delete note
 

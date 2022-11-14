@@ -13,7 +13,7 @@ const notesSchema = new Schema({
     pages: HType.array()
       .items(
         HType.object({
-          id: HType.string().default(Utils.generateID()),
+          id: HType.string(),
           content: HType.string(),
         })
       )
