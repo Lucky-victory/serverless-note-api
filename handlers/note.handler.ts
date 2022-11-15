@@ -68,16 +68,22 @@ export class NoteHandler {
   }
   static async delete(req: VercelRequest, res: VercelResponse) {
     try {
-      const { id } = req.query;
+      const { id, pageId } = req.query;
+      let message: string = "Note deleted successfully";
       const note = await NoteController.get(id as string);
       if (!note) {
         return res.status(404).json({
           message: `Note with id '${id}' does not exist`,
         });
       }
-      await NoteController.delete(id as string);
+      if (pageId) {
+        message = "Note page deleted successfully";
+        await NoteController.deletePage(id as string, pageId as string);
+      } else {
+        await NoteController.delete(id as string);
+      }
       return res.status(200).json({
-        message: "Note deleted successfully",
+        message,
       });
     } catch (error) {
       return res.status(500).json({

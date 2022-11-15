@@ -82,9 +82,26 @@ export class NoteController {
   }
   static async delete(id: string) {
     try {
-      const noteResponse = await NotesModel.findAndRemove({ id });
-      const note = noteResponse.data;
-      return note;
+      await NotesModel.findAndRemove({ id });
+    } catch (_) {
+      //
+    }
+  }
+  static async deletePage(noteId: string, pageId: string) {
+    try {
+      await NotesModel.updateNested({
+        id: noteId,
+        path: ".pages",
+        value: (data: INote) => {
+          if (!pageId) {
+            return data.pages;
+          }
+          data.pages = data.pages.filter((prevPage) => prevPage?.id !== pageId);
+          data.updated_at = Utils.currentTime.getTime();
+          return data.pages;
+        },
+        getAttributes: NOTE_FIELDS,
+      });
     } catch (_) {
       //
     }
