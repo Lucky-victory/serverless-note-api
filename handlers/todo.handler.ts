@@ -10,17 +10,16 @@ export class TodoHandler {
 
       const todo = await TodoController.get(id as string);
       if (!todo) {
-        res.status(404).json({
+        return res.status(404).json({
           message: `Todo with id '${id}' does not exist`,
         });
-        return;
       }
-      res.status(200).json({
+      return res.status(200).json({
         data: todo,
         message: "Todo retrieved successfully",
       });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         data: null,
         error: envConfig.is_dev ? error : null,
         message: "There was an error, can't retreive Todo",
@@ -31,7 +30,6 @@ export class TodoHandler {
   static async update(req: VercelRequest, res: VercelResponse) {
     try {
       const todoToUpdate: ITodo | ITodoItem = req.body;
-      console.log(todoToUpdate);
 
       const { id } = req.query;
       const part = req.query.part as TODO_UPDATE_TYPE;
@@ -70,8 +68,6 @@ export class TodoHandler {
         data: updatedTodo,
       });
     } catch (error) {
-      console.log(error);
-
       return res.status(500).json({
         data: null,
         error: envConfig.is_dev ? error : null,
@@ -84,17 +80,16 @@ export class TodoHandler {
       const { id } = req.query;
       const todo = await TodoController.get(id as string);
       if (!todo) {
-        res.status(404).json({
+        return res.status(404).json({
           message: `Todo with id '${id}' does not exist`,
         });
-        return;
       }
       await TodoController.delete(id as string);
-      res.status(200).json({
+      return res.send({
         message: "Todo deleted successfully",
       });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         data: null,
         error: envConfig.is_dev ? error : null,
         message: "There was an error,couldn't  delete Todo",

@@ -13,7 +13,9 @@ export class TodosController {
       });
 
       return todosResponse.data as ITodo[];
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async create(todo: NEW_TODO) {
@@ -37,6 +39,8 @@ export class TodosController {
       );
 
       return createdTodo.data;
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
 }

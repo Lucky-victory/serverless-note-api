@@ -14,16 +14,15 @@ content-type: application/json
 
 ### update note
 
-PUT  http://localhost:3000/api/notes/501eed12-c444-4b2d-9dd4-c66c1e14d5d6
+PUT  http://localhost:3000/api/notes/501eed12-c444-4b2d-9dd4-c66c1e14d5d6?part=page
 content-type: application/json
 
 {
-    "title":"fresh note updated 2","pages":[{
-        "content":"First page"
-    }]
-}
+     "content":"245634759u0"
+    }
 
 ### delete note
+
 DELETE  http://localhost:3000/api/notes/518f558b-9bcb-4adc-8d34-60abe973f7e2
 
 
@@ -35,11 +34,12 @@ GET http://localhost:3000/api/todos
 
 
 ### create todos
+
 POST http://localhost:3000/api/todos
 content-type: application/json
 
 {
-"title":"my grocery list","items":[{"content":"yam"},{"content":"beans"},{"content":"rice"}]
+"title":"my workspace setup 3","items":[{"content":"egornomous chair"},{"content":"laptop"},{"content":"blue glasses"}]
 }
 
 ### update todo
@@ -47,11 +47,14 @@ content-type: application/json
 PUT  http://localhost:3000/api/todos/257b89de-df0e-4ffb-a75b-8ce61329fa96?part=item
 content-type: application/json
 
-{"content":"garri extra"}
+ {
+          "content": "garri extra",
+          "completed": true,
+          "id": "item_e2ad3e90c1fe4dbc95f3bd299c3562ae"
+        }
 
 
 
 ### delete note
 
-DELETE  http://localhost:3000/api/todos/0e8ed3fb-f176-413d-b8a9-09cc4680daab
-content-type: application/json
+DELETE  http://localhost:3000/api/todos/257b89de-df0e-4ffb-a75b-8ce61329fa9

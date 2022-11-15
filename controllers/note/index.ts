@@ -8,7 +8,7 @@ export class NoteController {
       const noteResponse = await NotesModel.findOne<INote>({ id }, NOTE_FIELDS);
       const note = noteResponse.data;
       return note;
-    } catch (error) {}
+    } catch (_) {}
   }
   static async update(id: string, note: INote) {
     try {
@@ -17,19 +17,19 @@ export class NoteController {
       const noteToUpdate =
         Utils.pick(note, NotesModel.fields as (keyof INote)[]) || {};
 
-      await NotesModel.update([
-        {
-          id,
-          ...noteToUpdate,
-          updated_at: Utils.currentTime.getTime(),
+      const updatedNoteResponse = await NotesModel.updateNested({
+        id,
+        path: ".",
+        value: (data: INote) => {
+          data.category = noteToUpdate?.category || data.category;
+          data.pages = noteToUpdate?.pages || data.pages;
+          data.title = noteToUpdate?.title || data.title;
+          data.updated_at = Utils.currentTime.getTime();
+          return data;
         },
-      ]);
-      const updatedNoteResponse = await NotesModel.findOne<INote>(
-        {
-          id,
-        },
-        NOTE_FIELDS
-      );
+        getAttributes: NOTE_FIELDS,
+      });
+
       return updatedNoteResponse.data;
     } catch (_) {
       //
@@ -60,16 +60,17 @@ export class NoteController {
         id,
         path: ".pages",
         value: (data: INote) => {
-          if (!page?.id) {
+          if (page?.content && !page?.id) {
             data.pages.push({
               content: page?.content,
               id: `page_${Utils.generateID(false)}`,
             });
           }
           data.pages = data.pages.map((prevPage) => {
-            return prevPage.id === page.id ? page : prevPage;
+            return prevPage.id === page?.id ? page : prevPage;
           });
           data.updated_at = Utils.currentTime.getTime();
+          return data.pages;
         },
         getAttributes: NOTE_FIELDS,
       });

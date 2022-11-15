@@ -8,7 +8,9 @@ export class TodoController {
       const todoResponse = await TodosModel.findOne<ITodo>({ id }, TODO_FIELDS);
 
       return todoResponse.data;
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
   static async updateTitle(todoId: string, title: string) {
     try {
@@ -25,7 +27,9 @@ export class TodoController {
       });
 
       return updatedTodoResponse.data;
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async updatedItems(
@@ -38,14 +42,14 @@ export class TodoController {
         id: todoId,
         path: ".",
         value: (data: ITodo) => {
-          if (!todoItem?.id) {
+          if (todoItem?.content && !todoItem?.id) {
             data.items.push({
               content: todoItem?.content,
               completed: false,
               id: `item_${Utils.generateID(false)}`,
             });
           }
-        data.items=  data.items.map((prevItem) => {
+          data.items = data.items.map((prevItem) => {
             return prevItem.id === todoItem.id ? todoItem : prevItem;
           });
           data.updated_at = Utils.currentTime.getTime();
@@ -56,7 +60,9 @@ export class TodoController {
       });
 
       return updatedTodoResponse.data;
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
   static async update(
     todoId: string,
@@ -77,13 +83,17 @@ export class TodoController {
       });
 
       return updatedTodoResponse.data;
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async delete(todoId: string) {
     try {
       await TodosModel.findByIdAndRemove([todoId]);
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

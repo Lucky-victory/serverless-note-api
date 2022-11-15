@@ -6,14 +6,17 @@ import { NOTE_FIELDS } from "../note";
 export class NotesController {
   static async create(newNote: NEW_NOTE) {
     try {
-      const note = newNote?.pages?.map((page) => {
-        if (typeof page === "object") {
-          page.id = `page_${Utils.generateID(false)}`;
-        }
+      // loop through the pages and add an id
+      newNote.pages = newNote?.pages?.length
+        ? newNote?.pages?.map((page) => {
+            if (typeof page === "object") {
+              page.id = `page_${Utils.generateID(false)}`;
+            }
 
-        return page;
-      });
-      const createResponse = await NotesModel.create(note);
+            return page;
+          })
+        : [];
+      const createResponse = await NotesModel.create(newNote);
       const createdNoteId = createResponse.data?.inserted_hashes[0];
       const createdNote = await NotesModel.findOne<INote>(
         {
@@ -24,7 +27,6 @@ export class NotesController {
       return createdNote.data;
     } catch (error) {
       throw error;
-      console.log(error);
     }
   }
 
@@ -39,7 +41,9 @@ export class NotesController {
         getAttributes: NOTE_FIELDS,
       });
       return notesResponse.data;
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
   static async getByCategory(category: string) {
     try {
@@ -51,6 +55,8 @@ export class NotesController {
         getAttributes: NOTE_FIELDS,
       });
       return notesResponse.data;
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
 }

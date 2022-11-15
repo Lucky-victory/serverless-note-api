@@ -1,20 +1,29 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
 import { TodoHandler } from "../../handlers/todo.handler";
-import { HTTP_METHODS } from "../../interfaces/shared";
+import { HANDLER_CALLBACK, HTTP_METHODS } from "../../interfaces/shared";
 
-export default async (req: VercelRequest, res: VercelResponse) => {
+const mainHandler =
+  (fn: HANDLER_CALLBACK) => async (req: VercelRequest, res: VercelResponse) => {
+    return await fn(req, res);
+  };
+
+const handler = (req: VercelRequest, res: VercelResponse) => {
   const method = req.method as HTTP_METHODS;
   switch (method) {
     case "GET":
-      await TodoHandler.get(req, res);
+      return TodoHandler.get(req, res);
     case "PUT":
-      await TodoHandler.update(req, res);
+      return TodoHandler.update(req, res);
     case "DELETE":
-      await TodoHandler.delete(req, res);
+      return TodoHandler.delete(req, res);
     default:
-      res.status(405).json({
-        message: "Unsupported HTTP method",
-      });
+      return Promise.resolve(
+        res.status(405).json({
+          message: "Unsupported HTTP method",
+        })
+      );
   }
 };
+
+export default mainHandler(handler);
