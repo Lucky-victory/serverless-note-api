@@ -1,21 +1,15 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
-import { HANDLER_CALLBACK, HTTP_METHODS } from "../../interfaces/shared";
+import { HANDLER_CALLBACK, HTTP_METHODS } from "../../../interfaces/shared";
 
-import { NoteHandler } from "../../handlers/note.handler";
+import { NoteHandler } from "../../../handlers/note.handler";
+import { CorsHandler } from "../../../handlers/cors.handler";
+const corsHandler = new CorsHandler();
+
 const mainHandler =
   (fn: HANDLER_CALLBACK) => async (req: VercelRequest, res: VercelResponse) => {
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    corsHandler.setHeader(res);
 
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET,OPTIONS,DELETE,POST,PUT"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-    );
     if (req.method === "OPTIONS") {
       return res.status(200).end();
     }

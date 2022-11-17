@@ -7,4 +7,6 @@ export const envConfig = {
   db_user: process.env.DB_USER as string,
   db_schema: process.env.DB_SCHEMA,
   is_dev: process.env.NODE_ENV !== "production",
+  allowed_origins:
+    process.env.ALLOWED_ORIGINS || ("http://localhost:4200" as string),
 };

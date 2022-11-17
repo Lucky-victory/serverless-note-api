@@ -6,3 +6,7 @@ export type HANDLER_CALLBACK = (
   req: VercelRequest,
   res: VercelResponse
 ) => Promise<VercelResponse>;
+
+export interface ICorsHeaders {
+  [key: string]: string;
+}
