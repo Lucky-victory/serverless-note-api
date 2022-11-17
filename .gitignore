@@ -4,6 +4,7 @@
 # http://git-scm.com/docs/gitignore
 
 *~
+.env
 *.sw[mnpcod]
 .tmp
 *.tmp
@@ -29,6 +30,7 @@ npm-debug.log*
 !/.vscode/extensions.json
 /coverage
 /dist
+dist/
 /node_modules
 /platforms
 /plugins
