@@ -1,6 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { envConfig } from "../config";
-import { NoteController } from "../controllers/note";
+import { NoteController } from "../controllers/note.controller";
 import { INote, NOTE_UPDATE_TYPE } from "../interfaces/note";
 
 export class NoteHandler {

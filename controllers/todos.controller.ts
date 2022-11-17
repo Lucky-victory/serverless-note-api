@@ -1,7 +1,7 @@
-import { ITodo, NEW_TODO } from "../../interfaces/todos";
-import { TodosModel } from "../../models/todos.model";
-import { Utils } from "../../utils";
-import { TODO_FIELDS } from "../todo";
+import { ITodo, NEW_TODO } from "../interfaces/todos";
+import { TodosModel } from "../models/todos.model";
+import { Utils } from "../utils";
+import { TODO_FIELDS } from "./todo.controller";
 
 export class TodosController {
   static async getAll() {

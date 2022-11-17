@@ -1,6 +1,6 @@
-import { ITodo, ITodoItem } from "./../../interfaces/todos";
-import { TodosModel } from "../../models/todos.model";
-import { Utils } from "../../utils";
+import { ITodo, ITodoItem } from "../interfaces/todos";
+import { TodosModel } from "../models/todos.model";
+import { Utils } from "../utils";
 
 export class TodoController {
   static async get(id: string) {

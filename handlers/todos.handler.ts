@@ -1,6 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { envConfig } from "../config";
-import { TodosController } from "../controllers/todos";
+import { TodosController } from "../controllers/todos.controller";
 
 export class TodosHandler {
   static async get(req: VercelRequest, res: VercelResponse) {

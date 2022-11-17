@@ -1,7 +1,7 @@
-import { INote, NEW_NOTE } from "../../interfaces/note";
-import { NotesModel } from "../../models/notes.model";
-import { Utils } from "../../utils";
-import { NOTE_FIELDS } from "../note";
+import { INote, NEW_NOTE } from "../interfaces/note";
+import { NotesModel } from "../models/notes.model";
+import { Utils } from "../utils";
+import { NOTE_FIELDS } from "./note.controller";
 
 export class NotesController {
   static async create(newNote: NEW_NOTE) {

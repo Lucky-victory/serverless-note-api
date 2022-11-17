@@ -1,6 +1,6 @@
 import { envConfig } from "../config";
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { TodoController } from "../controllers/todo";
+import { TodoController } from "../controllers/todo.controller";
 import { ITodo, ITodoItem, TODO_UPDATE_TYPE } from "../interfaces/todos";
 
 export class TodoHandler {

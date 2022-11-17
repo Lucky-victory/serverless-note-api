@@ -1,7 +1,7 @@
 import { INote } from "./../interfaces/note";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { envConfig } from "../config";
-import { NotesController } from "../controllers/notes";
+import { NotesController } from "../controllers/notes.controller";
 
 export class NotesHandler {
   static async get(req: VercelRequest, res: VercelResponse) {
@@ -62,7 +62,9 @@ export const getUserNotes = async (
     const notesResponse = await NotesController.getAll("1", limit, offset);
 
     return notesResponse;
-  } catch (_) {}
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getUserNotesByCategory = async (
@@ -76,5 +78,7 @@ export const getUserNotesByCategory = async (
     );
 
     return notesResponse;
-  } catch (_) {}
+  } catch (error) {
+    throw error;
+  }
 };

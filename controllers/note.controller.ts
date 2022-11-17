@@ -1,6 +1,6 @@
-import { INote, INotePage } from "../../interfaces/note";
-import { NotesModel } from "../../models/notes.model";
-import { Utils } from "../../utils";
+import { INote, INotePage } from "../interfaces/note";
+import { NotesModel } from "../models/notes.model";
+import { Utils } from "../utils";
 
 export class NoteController {
   static async get(id: string) {
@@ -8,7 +8,9 @@ export class NoteController {
       const noteResponse = await NotesModel.findOne<INote>({ id }, NOTE_FIELDS);
       const note = noteResponse.data;
       return note;
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
   static async update(id: string, note: INote) {
     try {
@@ -31,8 +33,8 @@ export class NoteController {
       });
 
       return updatedNoteResponse.data;
-    } catch (_) {
-      //
+    } catch (error) {
+      throw error;
     }
   }
   static async updateTitle(id: string, title: string) {
@@ -49,8 +51,8 @@ export class NoteController {
       });
 
       return updatedNoteResponse.data;
-    } catch (_) {
-      //
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -76,15 +78,15 @@ export class NoteController {
       });
 
       return updatedNoteResponse.data;
-    } catch (_) {
-      //
+    } catch (error) {
+      throw error;
     }
   }
   static async delete(id: string) {
     try {
       await NotesModel.findAndRemove({ id });
-    } catch (_) {
-      //
+    } catch (error) {
+      throw error;
     }
   }
   static async deletePage(noteId: string, pageId: string) {
@@ -102,8 +104,8 @@ export class NoteController {
         },
         getAttributes: NOTE_FIELDS,
       });
-    } catch (_) {
-      //
+    } catch (error) {
+      throw error;
     }
   }
 }
