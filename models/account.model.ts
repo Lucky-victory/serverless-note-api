@@ -6,14 +6,16 @@ import { connectDB } from "../config/db";
 import { Utils } from "../utils";
 
 connectDB();
-const notesSchema = new Schema({
+const accountSchema = new Schema({
   name: envConfig.db_schema || "NoteApp",
   fields: {
-    user_id:HType.string().required(),
-    provider: HType.string().allow('google','facebook','github').default('google'),
+    user_id: HType.string().required(),
+    provider: HType.string()
+      .allow("google", "facebook", "github")
+      .default("google"),
     created_at: HType.date().default(Utils.currentTime.getTime()),
     updated_at: HType.date().default(Utils.currentTime.getTime()),
   },
 });
 
-export const NotesModel = new Model("accounts", notesSchema);
+export const AccountsModel = new Model("accounts", accountSchema);

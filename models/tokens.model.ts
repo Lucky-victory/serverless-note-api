@@ -6,7 +6,7 @@ import { connectDB } from "../config/db";
 import { Utils } from "../utils";
 
 connectDB();
-const notesSchema = new Schema({
+const tokensSchema = new Schema({
   name: envConfig.db_schema || "NoteApp",
   fields: {
     key: HType.string(),
@@ -19,4 +19,4 @@ const notesSchema = new Schema({
   },
 });
 
-export const NotesModel = new Model("tokens", notesSchema);
+export const TokensModel = new Model("tokens", tokensSchema);
