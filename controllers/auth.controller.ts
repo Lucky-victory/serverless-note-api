@@ -1,10 +1,24 @@
+import { VercelRequest } from "@vercel/node";
+import jwt from "jsonwebtoken";
 export class AuthController {
+  static getToken(req: VercelRequest) {}
+  static validateToken() {}
+  static async generateToken<T extends object>(payload: T) {
+    const token = await new Promise((resolve, reject) => {
+      jwt.sign(
+        payload,
+        "123",
+        {
+          expiresIn: "3d",
+        },
+        (err, encoded) => {
+          if (err) return reject(err);
 
-    static async signIn(){
+          return resolve(encoded as string);
+        }
+      );
+    });
 
-    }
-    static async signOut(){
-
-    }
-    
+    return token as string;
+  }
 }

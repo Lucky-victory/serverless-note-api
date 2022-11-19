@@ -14,3 +14,10 @@ const mainHandler =
     }
     return await fn(req, res);
   };
+const handler = (req: VercelRequest, res: VercelResponse) => {
+  const method = req.method as HTTP_METHODS;
+
+  return Promise.resolve(res.status(204).end());
+};
+
+export default mainHandler(handler);

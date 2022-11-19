@@ -15,9 +15,10 @@ export class AuthHandler {
         audience: envConfig.google_client_id,
       });
       const googleUser = googleUserToken.getPayload();
-      console.log({ googleUser });
+
       //chekc if the user already signed in with their google account
       let user = await UsersController.getUserById(googleUser?.sub as string);
+
       if (!user) {
         // otherwise create new user
         user = await UsersController.createUser({
@@ -31,7 +32,7 @@ export class AuthHandler {
         });
       }
       return res.status(200).json({
-        message: "signed in successfully",
+        message: "sign in successful",
         data: {
           user,
         },

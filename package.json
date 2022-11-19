@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/lucky-victory/serverless-note-api#readme",
   "dependencies": {
+    "@types/jsonwebtoken": "^8.5.9",
     "@vercel/node": "^2.6.2",
     "dotenv": "^16.0.3",
     "google-auth-library": "^8.7.0",
