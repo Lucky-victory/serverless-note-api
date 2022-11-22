@@ -10,13 +10,16 @@ export class NotesController {
       newNote.pages = newNote?.pages?.length
         ? newNote?.pages?.map((page) => {
             if (typeof page === "object") {
-              page.id = `page_${Utils.generateID(false)}`;
+              page.id = Utils.baseUUId();
             }
 
             return page;
           })
         : [];
-      const createResponse = await NotesModel.create(newNote);
+      const createResponse = await NotesModel.create({
+        ...newNote,
+        id: Utils.baseUUId(30),
+      });
       const createdNoteId = createResponse.data?.inserted_hashes[0];
       const createdNote = await NotesModel.findOne<INote>(
         {
@@ -24,6 +27,7 @@ export class NotesController {
         },
         NOTE_FIELDS
       );
+
       return createdNote.data;
     } catch (error) {
       throw error;

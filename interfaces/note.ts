@@ -5,6 +5,7 @@ export interface INote {
   created_at?: number;
   category?: string;
   user_id: string;
+  tags?: string[];
 }
 
 export type NEW_NOTE = Pick<INote, "category" | "pages" | "title" | "user_id">;

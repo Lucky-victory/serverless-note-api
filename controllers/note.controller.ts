@@ -65,7 +65,7 @@ export class NoteController {
           if (page?.content && !page?.id) {
             data.pages.push({
               content: page?.content,
-              id: `page_${Utils.generateID(false)}`,
+              id:Utils.baseUUId(),
             });
           }
           data.pages = data.pages.map((prevPage) => {

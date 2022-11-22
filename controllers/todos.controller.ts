@@ -22,14 +22,17 @@ export class TodosController {
     try {
       const newTodo = todo;
       // if the todo has items, add an id to each
-      newTodo.items?.length
+      newTodo?.items?.length
         ? newTodo.items.map((item) => {
-            item.id = `item_${Utils.generateID(false)}`;
+            item.id = Utils.baseUUId();
             return item;
           })
         : null;
 
-      const todoCreateResponse = await TodosModel.create(newTodo);
+      const todoCreateResponse = await TodosModel.create({
+        ...newTodo,
+        id: Utils.baseUUId(30),
+      });
       const createdTodoID = todoCreateResponse.data?.inserted_hashes[0];
       const createdTodo = await TodosModel.findOne<ITodo>(
         {
