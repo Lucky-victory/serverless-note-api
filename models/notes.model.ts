@@ -14,7 +14,7 @@ const notesSchema = new Schema({
       .items(
         HType.object({
           id: HType.string(),
-          content: HType.string(),
+          content: HType.string().allow(""),
         })
       )
       .default([]),

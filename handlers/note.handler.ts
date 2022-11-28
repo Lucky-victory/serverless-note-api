@@ -1,3 +1,4 @@
+import { Utils } from "./../utils/index";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { envConfig } from "../config";
 import { NoteController } from "../controllers/note.controller";
@@ -7,8 +8,10 @@ export class NoteHandler {
   static async get(req: VercelRequest, res: VercelResponse) {
     try {
       const { id } = req.query;
+      let { fields } = req.query;
+      if (!Array.isArray(fields)) fields = Utils.stringToArray(fields);
 
-      const note = await NoteController.get(id as string);
+      const note = await NoteController.get(id as string, fields);
       if (!note) {
         return res.status(404).json({
           message: `Note with id '${id}' does not exist`,
@@ -30,6 +33,8 @@ export class NoteHandler {
     try {
       const noteToUpdate = req.body;
       const { id } = req.query;
+      let { fields } = req.query;
+      if (!Array.isArray(fields)) fields = Utils.stringToArray(fields);
       const part = (req.query.part as NOTE_UPDATE_TYPE) || "all";
       const note = await NoteController.get(id as string);
       if (!note) {
@@ -41,17 +46,17 @@ export class NoteHandler {
       if (part === "title") {
         updatedNote = (await NoteController.updateTitle(
           id as string,
-          noteToUpdate?.title
+          noteToUpdate?.title,fields
         )) as INote;
       } else if (part === "page") {
         updatedNote = (await NoteController.updatePages(id as string, {
           id: noteToUpdate?.id,
           content: noteToUpdate?.content,
-        })) as INote;
+        },fields)) as INote;
       } else {
         updatedNote = (await NoteController.update(
           id as string,
-          noteToUpdate
+          noteToUpdate,fields
         )) as INote;
       }
       return res.status(200).json({
