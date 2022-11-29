@@ -31,6 +31,7 @@ export class NoteController {
           data.category = noteToUpdate?.category || data.category;
           data.pages = noteToUpdate?.pages || data.pages;
           data.title = noteToUpdate?.title || data.title;
+          data.content= noteToUpdate?.content || data.content;
           data.updated_at = Utils.currentTime.getTime();
           return data;
         },
@@ -70,12 +71,12 @@ export class NoteController {
         path: ".pages",
         value: (data: INote) => {
           if (!page?.id) {
-            data.pages.push({
+            data?.pages?.push({
               content: page?.content || "",
               id: Utils.baseUUId(),
             });
           }
-          data.pages = data.pages.map((prevPage) => {
+          data.pages = data?.pages?.map((prevPage) => {
             return prevPage.id === page?.id ? page : prevPage;
           });
           data.updated_at = Utils.currentTime.getTime();
@@ -105,7 +106,7 @@ export class NoteController {
           if (!pageId) {
             return data.pages;
           }
-          data.pages = data.pages.filter((prevPage) => prevPage?.id !== pageId);
+          data.pages = data?.pages?.filter((prevPage) => prevPage?.id !== pageId);
           data.updated_at = Utils.currentTime.getTime();
           return data.pages;
         },

@@ -18,10 +18,12 @@ const notesSchema = new Schema({
         })
       )
       .default([]),
+    content:HType.string().allow(''),
     user_id: HType.string().required(),
     created_at: HType.date().default(Utils.currentTime.getTime()),
     updated_at: HType.date().default(Utils.currentTime.getTime()),
     category: HType.string(),
+    tags:HType.array().default([]),
   },
 });
 
