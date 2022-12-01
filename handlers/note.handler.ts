@@ -2,12 +2,13 @@ import { Utils } from "./../utils/index";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { envConfig } from "../config";
 import { NoteController } from "../controllers/note.controller";
-import { INote, NOTE_UPDATE_TYPE } from "../interfaces/note";
+import
+{ INote, NOTE_UPDATE_TYPE } from "../interfaces/note";
 
 export class NoteHandler {
   static async get(req: VercelRequest, res: VercelResponse) {
     try {
-      const { id } = req.query;
+      const { id } = req.query;   
       let { fields } = req.query;
       if (!Array.isArray(fields)) fields = Utils.stringToArray(fields);
 

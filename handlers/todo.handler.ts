@@ -34,6 +34,7 @@ export class TodoHandler {
       const { id } = req.query;
       const part = req.query.part as TODO_UPDATE_TYPE;
 
+      
       const todo = await TodoController.get(id as string);
       if (!todo) {
         return res.status(404).json({
