@@ -61,7 +61,7 @@ export const getUserNotes = async (
     const offset = (page - 1) * limit;
     const notesResponse = await NotesController.getAll("1", limit, offset);
 
-    return notesResponse.data;
+    return notesResponse;
   } catch (error) {
     throw error;
   }
@@ -77,7 +77,7 @@ export const getUserNotesByCategory = async (
       category as string
     );
 
-    return notesResponse.data;
+    return notesResponse;
   } catch (error) {
     throw error;
   }
