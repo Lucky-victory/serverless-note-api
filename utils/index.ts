@@ -18,7 +18,7 @@ export class Utils extends MyUtils {
   static omit<T extends object>(obj: T, remove: (keyof T)[] | string[]) {
     return omit(obj, remove as (keyof T)[]);
   }
-  static baseUUId(len = 10) {
+  static baseUUID(len = 10) {
     return Base64UUID.generate(len);
   }
   static removeInvalidFields(fields: string[], validFields: string[]) {

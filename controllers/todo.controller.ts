@@ -46,7 +46,7 @@ export class TodoController {
             data.items.push({
               content: todoItem?.content,
               completed: false,
-              id: `item_${Utils.generateID(false)}`,
+              id: `item_${Utils.baseUUID()}`,
             });
           }
           data.items = data.items.map((prevItem) => {

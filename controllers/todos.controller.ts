@@ -20,18 +20,19 @@ export class TodosController {
 
   static async create(todo: NEW_TODO) {
     try {
-      const newTodo = todo;
+      const newTodo = Utils.pick(todo,TODO_FIELDS);
       // if the todo has items, add an id to each
-      newTodo?.items?.length
-        ? newTodo.items.map((item) => {
-            item.id = Utils.baseUUId();
+      newTodo.items=newTodo?.items?.length ?
+         newTodo.items.map((item) => {
+               if (typeof item === "object") {
+            item.id = Utils.baseUUID();
+               }
             return item;
-          })
-        : null;
+          }):[];
+        
 
       const todoCreateResponse = await TodosModel.create({
         ...newTodo,
-        id: Utils.baseUUId(30),
       });
       const createdTodoID = todoCreateResponse.data?.inserted_hashes[0];
       const createdTodo = await TodosModel.findOne<ITodo>(

@@ -9,5 +9,5 @@ export const envConfig = {
   google_client_id: process.env.GOOGLE_CLIENT_ID as string,
   is_dev: process.env.NODE_ENV !== "production",
   allowed_origins:
-    process.env.ALLOWED_ORIGINS || (process.env.NODE_ENV !== "production"? "http://localhost:4200" as string:''),
+    process.env.ALLOWED_ORIGINS || (process.env.NODE_ENV !== "production"? "*" as string:undefined),
 };

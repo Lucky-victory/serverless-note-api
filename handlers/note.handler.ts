@@ -10,7 +10,7 @@ export class NoteHandler {
     try {
       const { id } = req.query;   
       let { fields } = req.query;
-      if (!Array.isArray(fields)) fields = Utils.stringToArray(fields);
+      if (typeof fields !=='undefined' && !Array.isArray(fields)) fields = Utils.stringToArray(fields);
 
       const note = await NoteController.get(id as string, fields);
       if (!note) {

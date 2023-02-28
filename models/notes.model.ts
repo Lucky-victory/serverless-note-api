@@ -14,16 +14,18 @@ const notesSchema = new Schema({
       .items(
         HType.object({
           id: HType.string(),
-          content: HType.string().allow(""),
+          content: HType.string().allow(null),
         })
       )
       .default([]),
-    content:HType.string().allow(''),
+    content:HType.string().allow(null),
     user_id: HType.string().required(),
     created_at: HType.date().default(Utils.currentTime.getTime()),
     updated_at: HType.date().default(Utils.currentTime.getTime()),
-    category: HType.string(),
+    category: HType.string().allow(null),
     tags:HType.array().default([]),
+    
+        id:HType.string().default(Utils.baseUUID(30)),
   },
 });
 

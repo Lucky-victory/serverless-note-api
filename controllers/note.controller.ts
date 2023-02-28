@@ -72,8 +72,8 @@ export class NoteController {
         value: (data: INote) => {
           if (!page?.id) {
             data?.pages?.push({
-              content: page?.content || "",
-              id: Utils.baseUUId(),
+              content: page?.content || null,
+              id: Utils.baseUUID(),
             });
           }
           data.pages = data?.pages?.map((prevPage) => {
@@ -99,7 +99,7 @@ export class NoteController {
   }
   static async deletePage(noteId: string, pageId: string) {
     try {
-      await NotesModel.updateNested({
+    const noteResponse =  await NotesModel.updateNested({
         id: noteId,
         path: ".pages",
         value: (data: INote) => {
@@ -112,6 +112,7 @@ export class NoteController {
         },
         getAttributes: NOTE_FIELDS,
       });
+      return noteResponse.data;
     } catch (error) {
       throw error;
     }

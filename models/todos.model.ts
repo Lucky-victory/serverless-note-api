@@ -22,6 +22,8 @@ const todosSchema = new Schema({
     user_id: HType.string().required(),
     created_at: HType.date().default(Utils.currentTime.getTime()),
     updated_at: HType.date().default(Utils.currentTime.getTime()),
+    
+        id:HType.string().default(Utils.baseUUID(30)),
   },
 });
 
